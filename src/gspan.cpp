@@ -43,6 +43,7 @@ namespace GSPAN {
 
 gSpan::gSpan (void) {
     infoStream = &std::cerr;
+    soft_cork_prune = false;
 }
 
 std::istream &gSpan::read (std::istream &is,
@@ -392,11 +393,18 @@ bool gSpan::getAskCORK(Projected const * projected,
         maxImprovement += tempImprovement;
     }
 
-    /* test CORK pruning threshold */
+    /* test CORK pruning threshold
+     * Original (Thoma et al.): explore children only if a descendant can
+     * strictly improve the current CORK score.
+     * Soft (-S): also explore when the bound equals the current score, so
+     * a non-discriminative parent (e.g. a generic edge on unlabeled graphs)
+     * can still grow into a discriminative child.
+     */
     assert(maxImprovement <= *get_cork_value);
-    if (*get_cork_value - maxImprovement <= correspondences)
-        return true;
-    return false;
+    unsigned int bound = *get_cork_value - maxImprovement;
+    if (soft_cork_prune)
+        return bound <= correspondences;
+    return bound < correspondences;
 }
 
 void gSpan::resetCORK_Extensions() {
@@ -803,6 +811,10 @@ std::map<unsigned int,unsigned int> gSpan::translateSupportCounts(std::map<unsig
 
 void gSpan::setInfoStream(std::ostream &infoS) {
     infoStream = &infoS;
+}
+
+void gSpan::setSoftCorkPrune(bool enable) {
+    soft_cork_prune = enable;
 }
 
 void gSpan::run (std::istream &is, std::ostream &_os,

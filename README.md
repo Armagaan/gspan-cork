@@ -4,6 +4,8 @@ Discriminative frequent subgraph mining with CORK feature selection, based on [g
 
 This repository adds a reproducible build path (bundled igraph), helper scripts, and example datasets under `data/`.
 
+**Default CORK pruning matches the original paper** (strict bound). Pass **`-S`** for *soft* CORK pruning: children are still explored when a pattern cannot yet improve the CORK score. That is needed on unlabeled / feature-less graphs such as [`cycles`](#datasets) (every vertex and edge has the same label, so the only 2-node seed is a generic edge). Soft pruning can recover topological patterns (e.g. 6-cycles) but walks a larger search tree and **takes longer to run**.
+
 > The original upstream readme is preserved in [Readme.txt](Readme.txt).
 
 ## Quick start
@@ -52,6 +54,7 @@ Graph and label files live in `data/`:
 
 The `cycles` files are generated from the SMP k-cycle benchmark (k=6, n≈56) via
 `python folder/CYCLES/build_cycles_gspan.py` (5000 class-balanced graphs by default).
+Use `-S` with `-f CORK` / `-f FCORK` on this dataset; default (strict) pruning returns no subgraphs.
 
 Naming convention for datasets:
 
@@ -93,6 +96,7 @@ Examples:
 ./scripts/run-dataset.sh ptc -f FCORK -m 34
 ./scripts/run-dataset.sh ptc -f CORK10 -m 34 -w 1
 ./scripts/run-dataset.sh mutag -f FCORK
+./scripts/run-dataset.sh cycles -f FCORK -S
 ```
 
 Override output location:
@@ -134,6 +138,7 @@ Call `bin/gSpanCORK -h` for the full list. Common options:
 | `-e` / `-d` | Output DFS codes instead of DIMACS |
 | `-L <n>` | Maximum subgraph size (vertices) |
 | `-n <n>` | Minimum subgraph size (vertices; default 2) |
+| `-S` | Soft CORK prune (`<=` bound). Default is the original strict bound. Slower; needed for unlabeled graphs such as `cycles`. |
 
 `-l` is supplied automatically by `run-dataset.sh`.
 

@@ -394,6 +394,7 @@ private:
     std::string fs_option;
     bool fs; // perform CORK-filtering?
     bool do_le; // accept new subgraphs even if they do not improve CORK
+    bool soft_cork_prune; // if true, keep exploring when bound == current CORK score
     // needed for reaching a fixed number of selected features
     unsigned int number_of_classes;
     /*    graph vectors (corresponding to TRANS)     */
@@ -499,6 +500,9 @@ public:
                                          bool _verbose = false);
 
     void setInfoStream(std::ostream &infoS);
+    // Original CORK uses a strict bound (<). Soft prune (<=) continues
+    // exploring when a pattern cannot yet improve the score but a child might.
+    void setSoftCorkPrune(bool enable);
 };
 };
 #endif // GSPANDT_H

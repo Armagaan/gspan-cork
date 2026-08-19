@@ -80,6 +80,10 @@ void usage (void)
     std::cout << "  -p:         for performance testing, do not report patterns; only show" << std::endl;
     std::cout << "              total pattern count" << std::endl; // For gSpanSubs
     std::cout << "  -v:         also output information on the CORK statistics" << std::endl;
+    std::cout << "  -S:         soft CORK prune: keep exploring children when a pattern's" << std::endl;
+    std::cout << "              bound equals the current CORK score (default is the original" << std::endl;
+    std::cout << "              strict bound). Needed for unlabeled / feature-less graphs" << std::endl;
+    std::cout << "              such as CYCLES; explores a larger tree and is slower." << std::endl;
     std::cout << std::endl;
     // note that this option differs from the "verbose" parameter of the gSpan methods
     std::cout << "The graphs are read from stdin, and have to be in this format:" << std::endl;
@@ -107,11 +111,12 @@ int main (int argc, char **argv) {
     bool xml = false;
     bool verbose = false;
     bool report_result = true;  // For gSpanSubs
+    bool soft_cork_prune = false;
 
     std::string fs_option, class_label_file, correspondence_threshold, subs_file; // For gSpanSubs
 
     int opt;
-    while ((opt = getopt(argc, argv, "edw:t:m:L:Dhn:xf:l:vs:p")) != -1) { // For gSpanSubs
+    while ((opt = getopt(argc, argv, "edw:t:m:L:Dhn:xf:l:vs:pS")) != -1) { // For gSpanSubs
         switch(opt) {
         case 'm':
             minsup = atoi (optarg);
@@ -156,6 +161,9 @@ int main (int argc, char **argv) {
         case 'p': // For gSpanSubs
             report_result = false;
             break;
+        case 'S':
+            soft_cork_prune = true;
+            break;
         case 'h':
         default:
             usage ();
@@ -169,6 +177,7 @@ int main (int argc, char **argv) {
         fs_option += "C"+correspondence_threshold;
 
     GSPAN::gSpan gspan;
+    gspan.setSoftCorkPrune(soft_cork_prune);
     std::ostringstream dumpStream;
     if (!verbose) { // "verbose" does not equal the "verbose" option of the "run" methods:
         // those are rather debugging statements, documenting the single algorithmic steps
