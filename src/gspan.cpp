@@ -394,7 +394,7 @@ bool gSpan::getAskCORK(Projected const * projected,
 
     /* test CORK pruning threshold */
     assert(maxImprovement <= *get_cork_value);
-    if (*get_cork_value - maxImprovement < correspondences)
+    if (*get_cork_value - maxImprovement <= correspondences)
         return true;
     return false;
 }

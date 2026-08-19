@@ -48,17 +48,18 @@ void usage (void)
     std::cout << "options" << std::endl;
     std::cout << "  -h:         show this usage help" << std::endl;
     std::cout << "  -m <minsup>: set the minimum support (absolute count)" << std::endl;
-    std::cout << "  -t <tolerance-threshold>: when using feature selection," << std::endl;
-    std::cout << "              the procedure is stopped when fewer than " << std::endl;
-    std::cout << "              <tolerance-threshold> correspondences are remaining" << std::endl;
-    std::cout << "  -e:         output substructures in encoded form" << std::endl;
+    std::cout << "  -t <tolerance-threshold>: with '-f', stop feature selection when the" << std::endl;
+    std::cout << "              remaining correspondence count falls below this value" << std::endl;
+    std::cout << "  -e:         output substructures in encoded (DFS code) form" << std::endl;
+    std::cout << "  -d:         same as '-e'" << std::endl;
+    std::cout << "  -D:         treat input graphs as directed" << std::endl;
     std::cout << "  -w <where>: if '0' no traceback of matching graphs is returned" << std::endl;
     std::cout << "              if '1' adds list of graph ids containing the frequent subgraph" << std::endl;
     std::cout << "              if '2' additionally adds these subgraphs' frequencies after a" << std::endl;
     std::cout << "                     colon: <graphId>:<frequency>" << std::endl;
     std::cout << "  -L <maxpat>: the maximum number of vertices of the selected subgraphs" << std::endl;
 
-    std::cout << "  -n <minnodes>: the minimum number of nodes in substructes (default: 0)" << std::endl;
+    std::cout << "  -n <minnodes>: the minimum number of nodes in substructures (default: 2)" << std::endl;
     std::cout << std::endl;
     std::cout << "  -x:         output in xml style" << std::endl;
     std::cout << "  -f <fs_option>: option for nested feature selection; it requires a class" << std::endl;
@@ -74,10 +75,12 @@ void usage (void)
     std::cout << "                     <NumSubgraphs> of subgraphs"<< std::endl;
     std::cout << "  -l <class_label_file>: file assigning row-wise class labels to graphs" << std::endl;
     std::cout << "              where row X contains the class label of graph X" <<std::endl;
-    std::cout << "  -s <substructure_file>: the file that include restricted substructure in the pattern" << std::endl; // For gSpanSubs
-    std::cout << "                           IMPORTANT NOTICE: -s option does not work together with f, t, l options (the feature selection functions)";
-    std::cout << "  -p:         for the purpose of performance testing, do not report the patterns, only show total pattern number" << std::endl; // For gSpanSubs
-    std::cout << "  -v:         also output information on the CORK statistics\n" << std::endl;
+    std::cout << "  -s <substructure_file>: file containing restricted substructure patterns" << std::endl; // For gSpanSubs
+    std::cout << "              (does not work together with '-f', '-t', or '-l')" << std::endl;
+    std::cout << "  -p:         for performance testing, do not report patterns; only show" << std::endl;
+    std::cout << "              total pattern count" << std::endl; // For gSpanSubs
+    std::cout << "  -v:         also output information on the CORK statistics" << std::endl;
+    std::cout << std::endl;
     // note that this option differs from the "verbose" parameter of the gSpan methods
     std::cout << "The graphs are read from stdin, and have to be in this format:" << std::endl;
     std::cout << "t" << std::endl;

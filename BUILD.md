@@ -35,7 +35,7 @@ Example (PTC dataset from `Readme.txt`):
 
 ```bash
 cd /path/to/gspan-cork
-bin/gSpanCORK -f CORK10 -l data/ptc.lab -m 34 < data/ptc.txt
+bin/gSpanCORK -f CORK10 -l data/ptc_label.txt -m 34 < data/ptc_graph.txt
 ```
 
 ## Issues encountered and fixes
@@ -103,5 +103,5 @@ make IGRAPHLIB="-L../igraph/igraph/src/.libs -ligraph" \
      IGRAPHINCLUDE="-I../igraph/igraph/src" && \
 export LD_LIBRARY_PATH="$(pwd)/../igraph/igraph/src/.libs:$LD_LIBRARY_PATH" && \
 cd .. && \
-bin/gSpanCORK -f CORK10 -l data/ptc.lab -m 34 < data/ptc.txt
+bin/gSpanCORK -f CORK10 -l data/ptc_label.txt -m 34 < data/ptc_graph.txt
 ```
